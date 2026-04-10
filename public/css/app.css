@@ -1,0 +1,95 @@
+.coffee-navbar {
+    background: #f8f5f2;
+    border-bottom: 1px solid #e6dfd9;
+}
+
+/* Brand */
+.coffee-navbar .navbar-brand {
+    color: #4B2E2B !important;
+    font-weight: 600;
+}
+
+/* Menu Navbar */
+.coffee-navbar .nav-link {
+    color: #4B2E2B !important;
+}
+
+.coffee-navbar .nav-link:hover {
+    color: #6F4E37 !important;
+}
+
+/* Dropdown */
+.coffee-dropdown .dropdown-item {
+    color: #4B2E2B;
+}
+
+.coffee-dropdown .dropdown-item:hover {
+    background: #f8f5f2;
+    color: #6F4E37;
+}
+
+/* Sidebar Coffee Theme */
+.offcanvas {
+    background-color: #f8f5f2;
+}
+
+/* Text menu */
+.offcanvas .nav-link {
+    color: #4B2E2B;
+    font-weight: 500;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: 0.3s;
+}
+
+/* Hover */
+.offcanvas .nav-link:hover {
+    background-color: #e8dfd8;
+    color: #4B2E2B;
+}
+
+/* Active Menu */
+.offcanvas .nav-link.active {
+    background-color: #4B2E2B;
+    color: #ffffff !important;
+}
+
+/* Title */
+.offcanvas-title {
+    color: #4B2E2B;
+    font-weight: 600;
+}
+
+.offcanvas-body {
+    padding: 20px;
+}
+
+.btn-coffee {
+    background-color: #4B2E2B;
+    border-color: #4B2E2B;
+    color: #fff;
+}
+
+.btn-coffee:hover {
+    background-color: #6F4E37;
+    border-color: #6F4E37;
+    color: #fff;
+}
+
+.btn-coffee:focus,
+.btn-coffee:active {
+    background-color: #3b2422;
+    border-color: #3b2422;
+    box-shadow: 0 0 0 0.25rem rgba(75, 46, 43, 0.5);
+    color: #fff;
+}
+
+.btn-coffee:disabled {
+    background-color: #a1887f;
+    border-color: #a1887f;
+}
+
+.bg-coffee {
+    background-color: #6f4e37 !important;
+    color: #fff !important;
+}
