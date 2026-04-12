@@ -7,7 +7,6 @@
 
             <h4 class="mb-4 fw-bold">Ubah Akun</h4>
 
-            {{-- Alert Success --}}
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show">
                     {{ session('success') }}
@@ -19,7 +18,6 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Nama --}}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Nama</label>
                     <input 
@@ -34,7 +32,6 @@
                     @enderror
                 </div>
 
-                {{-- Email --}}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Email</label>
                     <input 
@@ -53,7 +50,6 @@
 
                 <h6 class="mb-3 text-muted">Ubah Password</h6>
 
-                {{-- Password Lama --}}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Password Lama</label>
                     <input 
@@ -67,7 +63,6 @@
                     @enderror
                 </div>
 
-                {{-- Password Baru --}}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Password Baru</label>
                     <input 
@@ -81,7 +76,6 @@
                     @enderror
                 </div>
 
-                {{-- Konfirmasi --}}
                 <div class="mb-4">
                     <label class="form-label fw-semibold">Konfirmasi Password</label>
                     <input 
@@ -92,7 +86,6 @@
                     >
                 </div>
 
-                {{-- Button --}}
                 <div class="d-flex justify-content-between mb-3">
                     <a href="{{ url()->previous() }}" class="btn btn-secondary">
                         Kembali

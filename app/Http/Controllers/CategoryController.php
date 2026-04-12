@@ -15,14 +15,14 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        // VALIDASI
         $request->validate([
-            'name' => 'required|string|max:255'
+            'type_menu' => 'required|string|max:255',
+            'cat_menu' => 'required|string|max:255'
         ]);
 
-        // SIMPAN DATA
         Category::create([
-            'name' => $request->name
+            'type_menu' => $request->type_menu,
+            'cat_menu' => $request->cat_menu
         ]);
 
         return redirect()->route('category')->with('success', 'Kategori berhasil ditambahkan');
@@ -35,14 +35,14 @@ class CategoryController extends Controller
     public function update(Request $request,$id)
     {
         $category = Category::findOrFail($id);
-        // VALIDASI
         $request->validate([
-            'name' => 'required|string|max:255'
+            'type_menu' => 'required|string|max:255',
+            'cat_menu' => 'required|string|max:255'
         ]);
 
-        // UPDATE DATA
         $category->update([
-            'name' => $request->name
+            'type_menu' => $request->type_menu,
+            'cat_menu' => $request->cat_menu
         ]);
 
         return redirect()->route('category')->with('success', 'Kategori berhasil diperbarui');

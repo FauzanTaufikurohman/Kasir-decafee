@@ -2,13 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,9 +14,6 @@ Route::post('login', [AuthController::class, 'login'])->name('login.post');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['role:1'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/customer', [CustomerController::class, 'index'])->name('customer');
-    Route::get('/product', [ProductController::class, 'index'])->name('product');
-    Route::get('/report', [ReportController::class, 'index'])->name('report');
 
     // Menu Routes FOR Manajemen
     Route::post('/menu-create', [MenuController::class, 'store'])->name('menus.store');
@@ -46,6 +40,9 @@ Route::middleware(['role:1,2,3,4'])->group(function () {
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 
     Route::get('/order', [OrderController::class, 'index'])->name('order');
+    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+    Route::get('/order/{order}', [OrderController::class, 'show'])->name('order.show');
+    Route::patch('/order/{order}/status', [OrderController::class, 'updateStatus'])->name('order.status');
 
     // PROFILE ROUTES
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');

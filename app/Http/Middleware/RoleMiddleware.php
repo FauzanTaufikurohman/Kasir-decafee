@@ -17,12 +17,10 @@ class RoleMiddleware
     {
         $user = auth()->user();
 
-        // belum login
         if (!$user) {
             return redirect('/login');
         }
 
-        // tidak punya akses
         if (!in_array($user->level, $roles)) {
             abort(403);
         }

@@ -15,14 +15,10 @@ return new class extends Migration
             $table->integer('level')->after('password')->default('4');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            
         });
     }
 };

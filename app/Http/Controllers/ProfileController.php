@@ -26,14 +26,12 @@ class ProfileController extends Controller
             'password' => 'nullable|min:6|confirmed'
         ]);
 
-        // cek password lama
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors([
                 'current_password' => 'Password lama salah'
             ]);
         }
 
-        // update data
         $user->name = $request->name;
         $user->email = $request->email;
 

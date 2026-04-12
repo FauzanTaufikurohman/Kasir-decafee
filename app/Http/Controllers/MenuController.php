@@ -17,7 +17,6 @@ class MenuController extends Controller
 
     public function store(Request   $request)
     {
-        // VALIDASI
         $request->validate([
             'name' => 'required|string|max:255',
             'harga' => 'required|numeric',
@@ -27,14 +26,12 @@ class MenuController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        // HANDLE UPLOAD GAMBAR
         $imagePath = null;
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('menu', 'public');
         }
 
-        // SIMPAN DATA
         Menu::create([
             'name' => $request->name,
             'harga' => $request->harga,
@@ -58,7 +55,6 @@ class MenuController extends Controller
     {
         $menu = Menu::findOrFail($id);
 
-        // VALIDASI
         $request->validate([
             'name' => 'required|string|max:255',
             'harga' => 'required|numeric',
@@ -68,14 +64,12 @@ class MenuController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        // HANDLE UPLOAD GAMBAR
         $imagePath = $menu->image;
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('menu', 'public');
         }
 
-        // UPDATE DATA
         $menu->update([
             'name' => $request->name,
             'harga' => $request->harga,
