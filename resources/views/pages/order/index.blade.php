@@ -25,7 +25,7 @@
                 <div>
                     <i class="bi bi-basket me-2"></i>Order
                 </div>
-                @if (!optional(auth()->user())->isDapur())
+                @if (in_array(auth()->user()->level, [1, 2]))
                     <button class="btn btn-coffee btn-sm" data-bs-toggle="modal" data-bs-target="#modalCreateOrder">
                         <i class="bi bi-plus-circle me-2"></i>Tambah Pesanan
                     </button>
@@ -114,9 +114,15 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="8" class="text-center text-muted py-4">
-                                        Belum ada pesanan.
+                                <tr class="table-light">
+                                    <td colspan="8" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="bi bi-inbox" style="font-size: 3rem; opacity: 0.5;"></i>
+                                            <p class="mt-3 mb-0">
+                                                <strong>Belum ada pesanan</strong>
+                                            </p>
+                                            <small class="d-block mt-1">Pesanan akan muncul di sini setelah dibuat</small>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforelse
@@ -216,50 +222,78 @@
 
 <script>
     $(document).ready(function () {
-        var table = $('#ordersTable').DataTable({
-            pageLength: 10,
-            lengthMenu: [5, 10, 25, 50],
-            ordering: true,
-            searching: true,
-            responsive: true,
-            dom: 'tip',
-            language: {
-                lengthMenu: 'Tampilkan _MENU_ data',
-                info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
-                paginate: {
-                    previous: '‹',
-                    next: '›'
+        var rowCount = $('#ordersTable tbody tr').length;
+        
+        var hasEmptyRow = $('#ordersTable tbody tr td[colspan="8"]').length > 0;
+
+        if (rowCount === 0 || hasEmptyRow) {
+            console.log('No orders found - DataTables not initialized');
+            return;
+        }
+
+        try {
+            var table = $('#ordersTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50],
+                ordering: true,
+                searching: true,
+                responsive: true,
+                dom: 'tip',
+                language: {
+                    lengthMenu: 'Tampilkan _MENU_ data',
+                    info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
+                    paginate: {
+                        previous: '‹',
+                        next: '›'
+                    },
+                    zeroRecords: 'Data tidak ditemukan'
                 },
-                zeroRecords: 'Data tidak ditemukan'
-            },
-            columnDefs: [
-                {
-                    targets: 0,
-                    orderable: false,
-                    searchable: false,
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1 + meta.settings._iDisplayStart;
+                columnDefs: [
+                    {
+                        targets: 0,
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1 + meta.settings._iDisplayStart;
+                        }
+                    },
+                    {
+                        targets: 5,
+                        orderable: false,
                     }
-                },
-                {
-                    targets: 5,
-                    orderable: false,
-                }
-            ]
-        });
+                ]
+            });
 
-        $('#tableSearch').on('keyup change', function () {
-            table.search(this.value).draw();
-        });
+            // Search functionality
+            $('#tableSearch').on('keyup change', function () {
+                table.search(this.value).draw();
+            });
 
-        $('#statusFilter').on('change', function () {
-            table.column(5).search(this.value).draw();
-        });
+            // Status filter functionality
+            $('#statusFilter').on('change', function () {
+                table.column(5).search(this.value).draw();
+            });
 
-        $('#resetFilter').on('click', function () {
-            $('#tableSearch').val('');
-            $('#statusFilter').val('');
-            table.search('').columns().search('').draw();
-        });
+            // Reset filter functionality
+            $('#resetFilter').on('click', function () {
+                $('#tableSearch').val('');
+                $('#statusFilter').val('');
+                table.search('').columns().search('').draw();
+            });
+
+        } catch (error) {
+            console.error('DataTables Error:', error);
+            // If DataTables fails to initialize, at least search will still work
+            console.log('Using fallback: Basic table search functionality');
+            
+            // Fallback search functionality
+            $('#tableSearch').on('keyup change', function () {
+                var searchText = $(this).val().toLowerCase();
+                $('#ordersTable tbody tr').each(function () {
+                    var rowText = $(this).text().toLowerCase();
+                    $(this).toggle(rowText.indexOf(searchText) > -1);
+                });
+            });
+        }
     });
 </script>

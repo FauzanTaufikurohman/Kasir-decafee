@@ -65,16 +65,18 @@
         <div class="card card-modern">
 
             <div class="card-body">
-
+                
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
                         <h5 class="fw-semibold mb-1">Manajemen Menu</h5>
                         <small class="text-muted">Kelola daftar menu restoran</small>
                     </div>
 
-                    <button class="btn btn-coffee" data-bs-toggle="modal" data-bs-target="#modalCreateMenu">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah
-                    </button>
+                    @if (auth()->user()->level !== 2)
+                        <button class="btn btn-coffee" data-bs-toggle="modal" data-bs-target="#modalCreateMenu">
+                            <i class="bi bi-plus-lg me-1"></i> Tambah
+                        </button>
+                    @endif
                 </div>
 
                 <div class="table-responsive">
@@ -86,7 +88,9 @@
                                 <th>Kategori</th>
                                 <th>Harga</th>
                                 <th>Stok</th>
-                                <th class="text-end">Aksi</th>
+                                @if (auth()->user()->level !== 2)
+                                    <th class="text-end">Aksi</th>
+                                @endif
                             </tr>
                         </thead>
 
@@ -135,23 +139,24 @@
                                         </span>
                                     </td>
 
+                                    @if (auth()->user()->level !== 2)
+                                        <td class="text-end">
+                                            <a href="{{ route('menu.edit', $menu->id) }}"
+                                                class="btn btn-sm btn-light border">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
 
-                                    <td class="text-end">
-                                        <a href="{{ route('menu.edit', $menu->id) }}" class="btn btn-sm btn-light border">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-
-                                        <form action="{{ route('menu.destroy', $menu->id) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-light border text-danger"
-                                                onclick="return confirm('Hapus menu ini?')">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-
+                                            <form action="{{ route('menu.destroy', $menu->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-light border text-danger"
+                                                    onclick="return confirm('Hapus menu ini?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr>
@@ -177,11 +182,12 @@
 
                 <form action="{{ route('menus.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-
-                    <div class="modal-header border-0">
-                        <h5 class="fw-semibold">Tambah Menu</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
+                    @if (auth()->user()->level !== 3)
+                        <div class="modal-header border-0">
+                            <h5 class="fw-semibold">Tambah Menu</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                    @endif
 
                     <div class="modal-body">
 

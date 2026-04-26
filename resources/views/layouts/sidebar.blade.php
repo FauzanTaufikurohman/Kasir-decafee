@@ -3,9 +3,9 @@
 
     $menuItems = [
         'dashboard' => ['icon' => 'bi-house-door', 'label' => 'Dashboard', 'access' => [1]],
-        'menu' => ['icon' => 'bi-egg-fried', 'label' => 'Menu', 'access' => [1, 2, 3]],
+        'menu' => ['icon' => 'bi-egg-fried', 'label' => 'Menu', 'access' => [1, 2, 4]],
         'category' => ['icon' => 'bi-list', 'label' => 'Category', 'access' => [1]],
-        'order' => ['icon' => 'bi-cart-check', 'label' => 'Order', 'access' => [1, 2, 3, 4]],
+        'order' => ['icon' => 'bi-cart-check', 'label' => 'Order', 'access' => [1, 2 ,3,4]],
         'user' => ['icon' => 'bi-person', 'label' => 'User', 'access' => [1]],
     ];
 @endphp

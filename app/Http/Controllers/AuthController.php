@@ -27,11 +27,21 @@ class AuthController extends Controller
                 4 => 'order',
             ];
 
-            return redirect()->route($redirectMap[$user->level] ?? 'dashboard');
+            return redirect()->route($redirectMap[$user->level] ?? 'dashboard')->with('success', 'Login berhasil!');
         }
 
-        return back()->withErrors([
-            'email' => 'Invalid credentials.',
+        // Cek apakah email ada di database
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
+        
+        if (!$user) {
+            return back()->withInput($request->only('email'))->withErrors([
+                'email' => 'Email tidak ditemukan. Silahkan periksa email Anda atau hubungi administrator.',
+            ]);
+        }
+
+        // Email ada tapi password salah
+        return back()->withInput($request->only('email'))->withErrors([
+            'password' => 'Password yang Anda masukkan salah. Silahkan coba lagi.',
         ]);
     }
 

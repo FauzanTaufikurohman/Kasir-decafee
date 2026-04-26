@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - PutraCoffie</title>
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Bootstrap Icon -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <style>
@@ -28,7 +26,6 @@
             font-weight: 600;
         }
 
-        /* Button Coffee */
         .btn-coffee {
             --bs-btn-color: #fff;
             --bs-btn-bg: #4B2E2B;
@@ -62,6 +59,28 @@
                 <small class="text-muted">Silahkan login terlebih dahulu</small>
             </div>
 
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    <strong>Login Gagal!</strong>
+                    @if ($errors->has('email'))
+                        <div>{{ $errors->first('email') }}</div>
+                    @endif
+                    @if ($errors->has('password'))
+                        <div>{{ $errors->first('password') }}</div>
+                    @endif
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i>
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <form class="needs-validation" novalidate action="{{ route('login.post') }}" method="POST">
                 @csrf
 
@@ -71,10 +90,15 @@
                         <span class="input-group-text">
                             <i class="bi bi-envelope"></i>
                         </span>
-                        <input type="email" class="form-control" name="email" placeholder="Masukkan Email" required>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Masukkan Email" value="{{ old('email') }}" required>
                         <div class="invalid-feedback">
                             Email harus diisi
                         </div>
+                        @error('email')
+                            <div class="invalid-feedback d-block">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 
@@ -84,10 +108,15 @@
                         <span class="input-group-text">
                             <i class="bi bi-lock"></i>
                         </span>
-                        <input type="password" name="password" class="form-control" placeholder="Masukkan Password" required>
+                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Masukkan Password" required>
                         <div class="invalid-feedback">
                             Password harus diisi
                         </div>
+                        @error('password')
+                            <div class="invalid-feedback d-block">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
 

@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'login'])->name('login.post');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-Route::middleware(['role:1'])->group(function () {
+
+Route::middleware(['role:1,2,3,4'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Menu Routes FOR Manajemen
@@ -34,18 +35,15 @@ Route::middleware(['role:1'])->group(function () {
     Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
-});
-Route::middleware(['role:1,2,3,4'])->group(function () {
-
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 
     Route::get('/order', [OrderController::class, 'index'])->name('order');
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
     Route::get('/order/{order}', [OrderController::class, 'show'])->name('order.show');
     Route::patch('/order/{order}/status', [OrderController::class, 'updateStatus'])->name('order.status');
+    Route::patch('/order/{order}/payment', [OrderController::class, 'updatePayment'])->name('order.payment');
 
     // PROFILE ROUTES
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
 });

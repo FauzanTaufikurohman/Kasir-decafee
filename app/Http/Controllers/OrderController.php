@@ -17,12 +17,36 @@ class OrderController extends Controller
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
-        $orders = Order::with(['user', 'items.menu'])
-            ->when($user?->isDapur(), function ($query) {
-                return $query->whereIn('status', ['pending', 'cooking', 'delivered']);
-            })
-            ->latest()
-            ->get();
+        // DEBUG: Cek user yang login
+        \Log::info('ORDER INDEX DEBUG', [
+            'user_id' => $user?->id,
+            'user_name' => $user?->name,
+            'user_level' => $user?->level,
+            'is_dapur' => $user?->isDapur(),
+        ]);
+
+        $ordersQuery = Order::with(['user', 'items.menu']);
+
+        // DEBUG: Log query sebelum filter
+        \Log::info('Initial query SQL', ['sql' => $ordersQuery->toSql()]);
+
+        if ($user && $user->isDapur()) {
+            $ordersQuery->whereIn('status', ['pending', 'cooking', 'delivered']);
+            \Log::info('Applying dapur filter');
+        }
+
+        $orders = $ordersQuery->latest()->get();
+
+        // DEBUG: Log hasil query
+        \Log::info('Orders retrieved', [
+            'count' => count($orders),
+            'sql' => $ordersQuery->toSql(),
+            'orders' => $orders->map(fn ($o) => [
+                'id' => $o->id,
+                'order_number' => $o->order_number,
+                'status' => $o->status,
+            ])->toArray(),
+        ]);
 
         $menus = Menu::with('category')
             ->orderBy('category_id')
@@ -30,21 +54,29 @@ class OrderController extends Controller
 
         $waiters = User::where('level', 3)->get();
 
-        return view('pages.order.index', compact('orders', 'menus', 'waiters'));
+        return view('pages.order.index', compact('orders', 'menus', 'waiters', 'user'));
     }
 
     public function store(Request $request)
     {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        // Only owner (1) and cashier (2) can create orders
+        if (!$user || !in_array($user->level, [1, 2])) {
+            return back()->with('error', 'Anda tidak memiliki akses untuk membuat pesanan.');
+        }
+
         $request->validate([
-            'waiter_id' => ['required', Rule::exists('users', 'id')->where(fn ($query) => $query->where('level', 3))],
+            'waiter_id' => ['required', Rule::exists('users', 'id')->where(fn($query) => $query->where('level', 3))],
             'table_number' => 'nullable|integer|min:1',
             'items' => 'required|array',
             'items.*.qty' => 'nullable|integer|min:0',
         ]);
 
         $selectedItems = collect($request->input('items', []))
-            ->filter(fn ($item) => isset($item['qty']) && (int) $item['qty'] > 0)
-            ->map(fn ($item, $menuId) => [
+            ->filter(fn($item) => isset($item['qty']) && (int) $item['qty'] > 0)
+            ->map(fn($item, $menuId) => [
                 'menu_id' => (int) $menuId,
                 'qty' => (int) $item['qty'],
             ]);
@@ -106,5 +138,40 @@ class OrderController extends Controller
         $order->update(['status' => $request->input('status')]);
 
         return redirect()->route('order.show', $order)->with('success', 'Status pesanan berhasil diperbarui.');
+    }
+
+    public function updatePayment(Request $request, Order $order)
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        if (!$user || !in_array($user->level, [1, 4])) {
+            return redirect()->route('order.show', $order)->with('error', 'Anda tidak memiliki akses untuk mengubah pembayaran.');
+        }
+
+        $request->validate([
+            'paid_at' => 'nullable|date',
+            'payment_method' => 'required|in:cash,qris',
+        ]);
+
+        $paidAtInput = $request->input('paid_at');
+
+        // Parse datetime-local format (Y-m-d\TH:i) and store as Y-m-d H:i
+        if ($paidAtInput) {
+            try {
+                $paidAt = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $paidAtInput);
+            } catch (\Exception $e) {
+                $paidAt = now();
+            }
+        } else {
+            $paidAt = now();
+        }
+
+        $order->update([
+            'paid_at' => $paidAt->format('Y-m-d H:i'),
+            'payment_method' => $request->input('payment_method'),
+        ]);
+
+        return redirect()->route('order.show', $order)->with('success', 'Status pembayaran berhasil diperbarui.');
     }
 }
