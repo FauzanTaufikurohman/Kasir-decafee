@@ -145,7 +145,7 @@ class OrderController extends Controller
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
-        if (!$user || !in_array($user->level, [1, 4])) {
+        if (!$user || !in_array($user->level, [1, 2])) {
             return redirect()->route('order.show', $order)->with('error', 'Anda tidak memiliki akses untuk mengubah pembayaran.');
         }
 
