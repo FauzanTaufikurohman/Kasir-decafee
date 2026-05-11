@@ -77,7 +77,7 @@
             $levels = [
                 1 => 'Super Admin',
                 2 => 'Kasir',
-                3 => 'Pelayan',
+                3 => 'Admin',
                 4 => 'Dapur',
             ];
         @endphp
@@ -212,7 +212,7 @@
                                 <option disabled selected>Pilih Level</option>
                                 <option value="1">Super Admin</option>
                                 <option value="2">Kasir</option>
-                                <option value="3">Pelayan</option>
+                                <option value="3">Admin</option>
                                 <option value="4">Dapur</option>
                             </select>
                         </div>

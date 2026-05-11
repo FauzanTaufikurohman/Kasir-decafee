@@ -41,7 +41,7 @@
                                 <select name="level" class="form-control" required>
                                     <option value="1" {{ $user->level == 1 ? 'selected' : '' }}>Super Admin</option>
                                     <option value="2" {{ $user->level == 2 ? 'selected' : '' }}>Kasir</option>
-                                    <option value="3" {{ $user->level == 3 ? 'selected' : '' }}>Pelayan</option>
+                                    <option value="3" {{ $user->level == 3 ? 'selected' : '' }}>Admin</option>
                                     <option value="4" {{ $user->level == 4 ? 'selected' : '' }}>Dapur</option>
                                 </select>
                             </div>

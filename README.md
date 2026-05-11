@@ -1,4 +1,4 @@
-# Aplikasi Pemesanan Cafe (PutraCoffee)
+# Aplikasi Pemesanan Cafe (Origin Cafee)
 Sebuah aplikasi yang dapat digunakan untuk pemesanan minuman dan makanan pada cafe, restoran, rumah makan atau yang sejenisnya.
 
 ## Pemilik/Admin (1)

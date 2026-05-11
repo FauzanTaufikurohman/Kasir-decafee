@@ -40,6 +40,7 @@ Route::middleware(['role:1,2,3,4'])->group(function () {
     Route::get('/order', [OrderController::class, 'index'])->name('order');
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
     Route::get('/order/{order}', [OrderController::class, 'show'])->name('order.show');
+    Route::get('/order/{order}/receipt', [OrderController::class, 'receipt'])->name('order.receipt');
     Route::patch('/order/{order}/status', [OrderController::class, 'updateStatus'])->name('order.status');
     Route::patch('/order/{order}/payment', [OrderController::class, 'updatePayment'])->name('order.payment');
 

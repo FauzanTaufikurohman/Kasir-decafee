@@ -2,10 +2,10 @@
     $level = auth()->user()->level;
 
     $menuItems = [
-        'dashboard' => ['icon' => 'bi-house-door', 'label' => 'Dashboard', 'access' => [1]],
-        'menu' => ['icon' => 'bi-egg-fried', 'label' => 'Menu', 'access' => [1, 2, 4]],
-        'category' => ['icon' => 'bi-list', 'label' => 'Category', 'access' => [1]],
-        'order' => ['icon' => 'bi-cart-check', 'label' => 'Order', 'access' => [1, 2 ,3,4]],
+        'dashboard' => ['icon' => 'bi-house-door', 'label' => 'Dashboard', 'access' => [1, 2]],
+        'menu' => ['icon' => 'bi-egg-fried', 'label' => 'Menu', 'access' => [1, 2, 3, 4]],
+        'category' => ['icon' => 'bi-list', 'label' => 'Category', 'access' => [1, 3]],
+        'order' => ['icon' => 'bi-cart-check', 'label' => 'Order', 'access' => [1, 2, 3, 4]],
         'user' => ['icon' => 'bi-person', 'label' => 'User', 'access' => [1]],
     ];
 @endphp
@@ -42,17 +42,12 @@
                                         </div>
 
                                         <span>{{ $item['label'] }}</span>
-
                                     </a>
                                 </li>
                             @endif
                         @endforeach
-
                     </ul>
-
-
                 </div>
-
             </div>
         </div>
     </nav>

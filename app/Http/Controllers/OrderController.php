@@ -17,36 +17,9 @@ class OrderController extends Controller
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
-        // DEBUG: Cek user yang login
-        \Log::info('ORDER INDEX DEBUG', [
-            'user_id' => $user?->id,
-            'user_name' => $user?->name,
-            'user_level' => $user?->level,
-            'is_dapur' => $user?->isDapur(),
-        ]);
-
         $ordersQuery = Order::with(['user', 'items.menu']);
 
-        // DEBUG: Log query sebelum filter
-        \Log::info('Initial query SQL', ['sql' => $ordersQuery->toSql()]);
-
-        if ($user && $user->isDapur()) {
-            $ordersQuery->whereIn('status', ['pending', 'cooking', 'delivered']);
-            \Log::info('Applying dapur filter');
-        }
-
         $orders = $ordersQuery->latest()->get();
-
-        // DEBUG: Log hasil query
-        \Log::info('Orders retrieved', [
-            'count' => count($orders),
-            'sql' => $ordersQuery->toSql(),
-            'orders' => $orders->map(fn ($o) => [
-                'id' => $o->id,
-                'order_number' => $o->order_number,
-                'status' => $o->status,
-            ])->toArray(),
-        ]);
 
         $menus = Menu::with('category')
             ->orderBy('category_id')
@@ -62,7 +35,6 @@ class OrderController extends Controller
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
-        // Only owner (1) and cashier (2) can create orders
         if (!$user || !in_array($user->level, [1, 2])) {
             return back()->with('error', 'Anda tidak memiliki akses untuk membuat pesanan.');
         }
@@ -145,7 +117,7 @@ class OrderController extends Controller
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
-        if (!$user || !in_array($user->level, [1, 4])) {
+        if (!$user || !in_array($user->level, [1, 2])) {
             return redirect()->route('order.show', $order)->with('error', 'Anda tidak memiliki akses untuk mengubah pembayaran.');
         }
 
@@ -173,5 +145,19 @@ class OrderController extends Controller
         ]);
 
         return redirect()->route('order.show', $order)->with('success', 'Status pembayaran berhasil diperbarui.');
+    }
+
+    public function receipt(Order $order)
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        if (!$user || !in_array($user->level, [1, 2])) {
+            return redirect()->route('order.show', $order)->with('error', 'Anda tidak memiliki akses untuk mencetak struk.');
+        }
+
+        $order->load(['user', 'items.menu']);
+
+        return view('pages.order.receipt', compact('order'));
     }
 }

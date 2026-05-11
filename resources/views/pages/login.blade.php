@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - PutraCoffie</title>
+    <title>Login - Origin Cafee</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -55,7 +55,7 @@
 
             <div class="text-center mb-4">
                 <img src="{{ asset('images/logo.webp') }}" width="70">
-                <h4 class="login-header mt-2">PutraCoffee</h4>
+                <h4 class="login-header mt-2">Origin Cafee</h4>
                 <small class="text-muted">Silahkan login terlebih dahulu</small>
             </div>
 

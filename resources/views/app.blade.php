@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Putra Coffee - Kasir</title>
+    <title>Origin Cafee - Kasir</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -29,7 +29,7 @@
 
     <!-- Footer -->
     <div class="fixed-bottom text-center bg-white py-2 border-top">
-        Copyright 2026 PutraCoffee
+        Copyright 2026 Origin Cafee
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

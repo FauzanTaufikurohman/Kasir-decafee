@@ -3,6 +3,9 @@
 
     <div class="col-lg-9 mt-2" style="max-height: 80vh; overflow-y: auto;">
         <div class="card">
+            @php
+                $user = Auth::user();
+            @endphp
             <div class="card-header d-flex align-items-center justify-content-between">
                 <div>
                     <a href="{{ route('order') }}" class="btn btn-sm btn-light me-2">
@@ -10,10 +13,17 @@
                     </a>
                     Detail Pesanan
                 </div>
-                <span
-                    class="badge bg-{{ $order->status === 'pending' ? 'warning' : ($order->status === 'cooking' ? 'info' : ($order->status === 'delivered' ? 'primary' : ($order->status === 'completed' ? 'success' : 'danger'))) }}">
-                    {{ $order->status === 'pending' ? 'Pending' : ($order->status === 'cooking' ? 'Sedang Dimasak' : ($order->status === 'delivered' ? 'Diantarkan' : ($order->status === 'completed' ? 'Selesai' : 'Batal'))) }}
-                </span>
+                <div class="d-flex align-items-center gap-2">
+                    @if ($user && in_array($user->level, [1, 2]))
+                        <a href="{{ route('order.receipt', $order) }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-printer"></i> Cetak Struk
+                        </a>
+                    @endif
+                    <span
+                        class="badge bg-{{ $order->status === 'pending' ? 'warning' : ($order->status === 'cooking' ? 'info' : ($order->status === 'delivered' ? 'primary' : ($order->status === 'completed' ? 'success' : 'danger'))) }}">
+                        {{ $order->status === 'pending' ? 'Pending' : ($order->status === 'cooking' ? 'Sedang Dimasak' : ($order->status === 'delivered' ? 'Diantarkan' : ($order->status === 'completed' ? 'Selesai' : 'Batal'))) }}
+                    </span>
+                </div>
             </div>
             <div class="card-body">
                 @if (session('success'))

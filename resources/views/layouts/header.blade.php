@@ -3,7 +3,7 @@
     <div class="container-lg">
         <a class="navbar-brand d-flex align-items-center" href="../">
             <img src="{{ asset('images/logo.webp') }}" alt="Logo" width="35" height="35" class="me-2">
-            <span class="fw-semibold">PutraCoffee</span>
+            <span class="fw-semibold">Origin Cafee</span>
         </a>
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
