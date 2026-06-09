@@ -91,7 +91,7 @@
 <body>
     <div class="receipt">
         <div class="receipt-header">
-            <h1>Origin Cafee</h1>
+            <h1>Origin Cafee </h1>
             <p>Struk Pembayaran</p>
             <p>{{ now()->format('d/m/Y H:i') }}</p>
         </div>
